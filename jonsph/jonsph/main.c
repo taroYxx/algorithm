@@ -19,13 +19,18 @@ typedef struct Node{
 //创建环
 Node* createCycle(int num){
     if (num <= 0) return NULL;
-    
+    int firstData;
+    printf("请输入M值(M值不能为0)：");
+    scanf("%d",&firstData);
     Node *head = (Node*)malloc(sizeof(Node));
-    head->data = 1;
+    head->data = firstData;
     Node *p = head;
     for (int i = 2; i<=num; i++) {
+        int pData;
+        printf("请输入M值(M值不能为0)：");
+        scanf("%d",&pData);
         Node *q = (Node*)malloc(sizeof(Node));
-        q->data = i;
+        q->data = pData;
         p->next = q;
         p = q;
     }
@@ -38,13 +43,9 @@ Node *showNode(Node *cycle){
     if (cycle == NULL) {
         return NULL;
     }
-    
-    
-    
     Node *phead = cycle;
     Node *p = phead;
     printf("%p--data:%d\n",p,p->data);
-   
     while (p->next && p->next != phead) {
         p = p->next;
         printf("%p--data:%d\n",p,p->data);
@@ -54,38 +55,42 @@ Node *showNode(Node *cycle){
 
 Node *jonsph(Node *cycle,int totalNum, int inputNum){
     if(!cycle || inputNum<=0) return NULL;
-    
     Node *pCur = cycle;
-    
     int time = 1;
     while (time < totalNum) {
-        
         Node *pLast = pCur;
-        for (int i = 0; i<inputNum; i++) {
+        for (int i = 1; i<inputNum; i++) {
             pLast = pCur;
             pCur = pCur->next;   //定位删除结点
-            
-            
         }
-        
         pLast->next = pCur->next;
-        printf("deleteP: %p--%d\n",pCur,pCur->data);
+//        printf("deleteP: %p--%d",pCur,pCur->data);
+        printf("%d  ",pCur->data);
         free(pCur);
         pCur = pLast->next;
+        
         time++;
     }
-    
+    printf("%d  \n",pCur->data);
     return pCur;
     
 }
 
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    Node *cycle = createCycle(10);
-    showNode(cycle);
-    Node *result = jonsph(cycle, 10, 20);
-    printf("finally data\n\n");
-    showNode(result);
+    
+    printf("请输入参与的人数\n");
+    int peopleCount;
+    scanf("%d",&peopleCount);
+    
+    printf("请输入初始M值(M值不能为0):");
+    int initialM;
+    scanf("%d",&initialM);
+    
+    Node *cycle = createCycle(peopleCount);
+//    showNode(cycle);
+    jonsph(cycle, peopleCount, initialM);
+//    printf("finally data\n\n");
+//    showNode(result);
     return 0;
 }
